@@ -48,19 +48,59 @@
         button:hover {
             background-color: #4cae4c;
         }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        .sentiment {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .accuracy {
+            font-size: 18px;
+            color: #777;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Sentiment Analysis</h1>
-        <form method="post" action="/predict">
-            <div class="input-group">
-                <label for="comment">Type your text:</label>
-                <textarea id="comment" name="comment" rows="4" placeholder="This is a comment..."></textarea>
-            </div>
-            <button type="submit">Predict Sentiment</button>
-        </form>
-        <div id="result"></div>
+        <div class="input-group">
+            <label for="comment">Type your text:</label>
+            <textarea id="comment" name="comment" rows="4" placeholder="This is a comment..."></textarea>
+        </div>
+        <button onclick="predictSentiment()">Predict Sentiment</button>
+        <div id="result" class="result" style="display: none;"></div>
     </div>
+
+    <script>
+        function predictSentiment() {
+            var comment = document.getElementById('comment').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/predict', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.status == 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        displayResult(response.sentiment, response.accuracy);
+                    } else {
+                        console.error('Error:', xhr.statusText);
+                    }
+                }
+            };
+            var data = JSON.stringify({ comment: comment });
+            xhr.send(data);
+        }
+
+        function displayResult(sentiment, accuracy) {
+            var resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="sentiment">Sentiment Result: ' + sentiment + '</div><div class="accuracy">Accuracy: ' + accuracy + '</div>';
+            resultDiv.style.display = 'block';
+        }
+    </script>
 </body>
 </html>
