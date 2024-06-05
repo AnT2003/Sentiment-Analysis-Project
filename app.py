@@ -8,7 +8,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from imblearn.over_sampling import SMOTE
 from sklearn.metrics import accuracy_score
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='docs')
 
 # Load data and preprocess it
 df = pd.read_csv('comments_data.csv')
