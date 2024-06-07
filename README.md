@@ -31,7 +31,9 @@ This project aims to collect comment data from the Tiki.vn website and analyze t
 ## Usage
 **Run the Web Application**: Dowload file `app.py` and folder `templates` then run `app.py` and access `http://localhost:5000` in your browser to use the web application:
 ![run the app](images/app.png)
+
 **Predict Sentiment Results**: Enter the text that you want to predict the sentiment and click on button "Predict Sentiment" and then this app will return the prediction result:
+
 ![predict](images/result.png)
 
 
