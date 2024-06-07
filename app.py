@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, render_template, jsonify
 import pandas as pd
 import re
 from pyvi import ViTokenizer
@@ -58,6 +58,9 @@ model_lr = LogisticRegression(C=100, penalty='l1', solver='liblinear')
 best_model_lr = model_lr.fit(X_Train_resampled, y_Train_resampled)
 y_pred_lr = best_model_lr.predict(X_test)
 
+@app.route('/')
+def home():
+    return render_template('index.html')
 @app.route('/predict', methods=['POST'])
 def predict():
     if request.method == 'POST':
@@ -65,8 +68,7 @@ def predict():
         comment = data['comment']
         processed_comment = preprocess(comment)
         sentiment = best_model_lr.predict(tfidf_vectorizer.transform([processed_comment]))[0]
-        accuracy = accuracy_score(y_test, y_pred_lr)
-        return jsonify({'sentiment': sentiment, 'accuracy': accuracy})
+        return jsonify({'sentiment': sentiment})
 
 if __name__ == '__main__':
     app.run(debug=True)
