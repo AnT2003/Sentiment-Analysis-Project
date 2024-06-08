@@ -47,4 +47,4 @@ This project successfully collects data from Tiki.vn, builds 3 machine learning 
 - Integrate user authentication and user-specific sentiment analysis for personalized experiences.
 
 ## Acknowledgements
-We would like to thank the Tiki.vn website for providing valuable data for this project. We also appreciate the open-source community for their contributions to libraries and tools used in this project.
+I would like to thank the Tiki.vn website for providing valuable data for this project. We also appreciate the open-source community for their contributions to libraries and tools used in this project.
