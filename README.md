@@ -25,6 +25,7 @@ This project aims to collect comment data from the Tiki.vn website about phone, 
 ![WC_neg](images/wc_negative.png)
 ### WordCloud for neutral sentiment
 ![WC_neu](images/wc_neutral.png)
+
 5. **Model Building**: Using the preprocessed data, I train a machine learning model, such as Logistic Regression, SGD Classifier, Naive Bayes.
 6. **Web Application**: Using flask to develop a basic web application where users can input text and receive sentiment predictions from the trained model.
 
