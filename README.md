@@ -11,7 +11,7 @@
 
 ## Introduction
 Hi, Welcome to my Project
-This project aims to collect comment data from the Tiki.vn website and analyze their sentiments. Subsequently, we build a machine learning model to predict the sentiment of comments based on their content. You can use the developed web application to input text and receive predictions about its sentiment.
+This project aims to collect comment data from the Tiki.vn website about phone, tablet and analyze their sentiments. Subsequently, we build a machine learning model to predict the sentiment of comments based on their content. You can use the developed web application to input text and receive predictions about its sentiment.
 
 ## How it works
 1. **Data Collection**: Use web crawling tools to gather data from the Tiki.vn website with request module on Python. The collected data includes information about products, comments, and customer ratings.
