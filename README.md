@@ -1,50 +1,141 @@
-# Tiki Sentiment Analysis Project
+# E-Commerce Sentiment Analysis Pipeline
 
-## Table of Contents
-- [Introduction](#introduction)
-- [How it works](#how-it-works)
-- [Files and Directories](#files-and-directories)
-- [Usage](#usage)
-- [Conclusion](#conclusion)
-- [Future Work](#future-work)
-- [Acknowledgements](#acknowledgements)
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.100.0-00a393)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-FF6F00)
+![XGBoost](https://img.shields.io/badge/XGBoost-1.7-F37626)
+![Apache Spark](https://img.shields.io/badge/PySpark-Data%20Engineering-E25A1C)
 
-## Introduction
-Hi, Welcome to my Project
-This project aims to collect comment data from the Tiki.vn website about phone, tablet and analyze their sentiments. Subsequently, we build a machine learning model to predict the sentiment of comments based on their content. You can use the developed web application to input text and receive predictions about its sentiment.
+## 📌 Project Overview
+This project provides a complete, end-to-end Data Engineering and Machine Learning pipeline for Sentiment Analysis on Vietnamese E-commerce product reviews. 
 
-## How it works
-1. **Data Collection**: Use web crawling tools to gather data from the Tiki.vn website with request module on Python. The collected data includes information about products, comments, and customer ratings.
-2. **Data Preprocessing**: Preprocess comments to remove missing values, duplicate values, unnecessary characters, normalize text, tokenize Vietnamese words then vectorize and balance data.
-3. **Analysis and Visualizations**: Ggenerated some plots like word cloud to visualize the most frequent words used in customer comments. The size of each word represents its frequency in the comments.
-### Distribution of Sentiment by number of comment
-![dis](images/distribution.png)
-### WordCloud for postive sentiment
-![WC_pos](images/wc_positive.png)
-### WordCloud for negative sentiment
-![WC_neg](images/wc_negative.png)
-### WordCloud for neutral sentiment
-![WC_neu](images/wc_neutral.png)
+The pipeline automates the data ingestion process from external APIs, processes large-scale textual data using Spark/Pandas, balances classes using SMOTE, and trains highly accurate sentiment classification models (XGBoost & BiLSTM). Finally, it serves the models through a high-performance REST API built with FastAPI, complete with a modern Glassmorphism Web UI.
 
-5. **Model Building**: Using the preprocessed data, I train a machine learning model, such as Logistic Regression, SGD Classifier, Naive Bayes.
-6. **Web Application**: Using flask to develop a basic web application where users can input text and receive sentiment predictions from the trained model.
+## ✨ Key Features
+- **Data Ingestion (Crawler):** Automated data scraping mechanism targeting product listings and customer reviews with built-in fault tolerance and request throttling.
+- **Data Engineering:** Scalable text processing pipeline. Includes Vietnamese tokenization (`pyvi`), noise removal, and data standardization outputting to optimized `.parquet` format.
+- **Machine Learning (XGBoost):** TF-IDF vectorization paired with gradient boosting, optimized via hyperparameter tuning to achieve high precision and fast inference.
+- **Deep Learning (BiLSTM):** Custom recurrent neural network architecture utilizing Bidirectional LSTM layers, Dropout regularization, and Early Stopping for capturing deep sequential context.
+- **RESTful API & Web UI:** Fast, async API serving the models, documented via Swagger UI, accompanied by a dynamic, responsive web interface.
 
-## Usage
-**Run the Web Application**: Dowload file `app.py` and folder `templates` then run `app.py` and access `http://localhost:5000` in your browser to use the web application:
-![run the app](images/app.png)
+## 🛠️ Technology Stack
+- **Data Engineering:** `pandas`, `pyspark`, `requests`, `pyarrow`
+- **Machine Learning:** `scikit-learn`, `xgboost`, `imblearn` (SMOTE)
+- **Deep Learning:** `tensorflow`, `keras`
+- **NLP Processing:** `pyvi`, `nltk`
+- **Backend & Serving:** `fastapi`, `uvicorn`, `jinja2`
+- **Frontend:** `HTML5`, `CSS3` (Glassmorphism design), `Vanilla JS`
 
-**Predict Sentiment Results**: Enter the text that you want to predict the sentiment and click on button "Predict Sentiment" and then this app will return the prediction result:
+## 📂 Project Structure
+```text
+Sentiment-Analysis-Project/
+├── api/
+│   ├── main.py                # FastAPI application setup and routing
+│   └── schemas.py             # Pydantic schemas for request/response validation
+├── data/
+│   ├── raw/                   # Raw crawled CSV files
+│   └── processed/             # Cleaned and tokenized Parquet files
+├── models/                    # Serialized models (.pkl, .h5) and tokenizers
+├── notebooks/                 # Exploratory Data Analysis & Prototyping
+├── src/
+│   ├── data_engineering/
+│   │   ├── crawler.py         # E-commerce review crawler script
+│   │   ├── pandas_processing.py # Local data processing pipeline
+│   │   └── spark_processing.py  # Distributed data processing pipeline (PySpark)
+│   ├── models/
+│   │   ├── train_bilstm.py    # Deep Learning training pipeline
+│   │   └── train_xgboost.py   # Machine Learning training pipeline
+│   └── utils/
+│       └── text_processing.py # NLP utilities (cleaning, tokenization)
+├── templates/
+│   └── index.html             # Modern Web UI template
+├── requirements.txt           # Project dependencies
+└── README.md                  # Project documentation
+```
 
-![predict](images/result.png)
+## 🚀 Installation & Setup
+
+### 1. Prerequisites
+- Python 3.8 or higher.
+- Java 8 (Required for Apache Spark/PySpark).
+- Virtual Environment tool (`venv` or `conda`).
+
+### 2. Environment Setup
+Clone the repository and install dependencies:
+```bash
+git clone <repository_url>
+cd Sentiment-Analysis-Project
+
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install required packages
+pip install -r requirements.txt
+```
+
+## ⚙️ Usage Guide
+
+### Step 1: Data Ingestion
+Run the crawler to fetch the latest product reviews.
+```bash
+python src/data_engineering/crawler.py --max_product_pages 5 --max_comment_pages 10
+```
+
+### Step 2: Data Processing
+Process the raw `.csv` files into tokenized `.parquet` format for optimized training.
+```bash
+# Using standard Pandas pipeline
+python src/data_engineering/pandas_processing.py
+
+# OR Using PySpark for large datasets
+python src/data_engineering/spark_processing.py
+```
+
+### Step 3: Model Training
+Train the classification models. The scripts handle train/test splitting, SMOTE balancing, training, evaluation, and serialization.
+```bash
+# Train XGBoost Model
+python src/models/train_xgboost.py
+
+# Train Deep Learning BiLSTM Model
+python src/models/train_bilstm.py
+```
+
+### Step 4: Start the API Server
+Launch the FastAPI application to serve predictions.
+```bash
+python -m uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+## 🌐 API Reference
+
+Once the server is running, the interactive Swagger documentation is automatically available at:
+`http://localhost:8000/docs`
+
+### Endpoints
+- `GET /` : Renders the web interface.
+- `POST /api/predict/xgboost` : Predicts sentiment using the XGBoost model.
+- `POST /api/predict/bilstm` : Predicts sentiment using the BiLSTM model.
+
+**Payload Example:**
+
+<img width="817" height="790" alt="image" src="https://github.com/user-attachments/assets/2d35a3d2-6983-4cdb-a54b-cace5c0fd235" />
 
 
-## Conclusion
-This project successfully collects data from Tiki.vn, builds 3 machine learning model and use model Logistic Regression with accuracy score approximate 89% to predict comment sentiment, and deploys a web application for users to utilize the model. Improvements in model accuracy can be achieved through further tuning and additional data.
+```json
+{
+  "comment": "Sản phẩm tệ quá,rất nhanh hỏng"
+}
+```
 
-## Future Work
-- Enhance model accuracy by experimenting with different algorithms and hyperparameters.
-- Implement sentiment analysis for other languages to cater to a wider audience.
-- Integrate user authentication and user-specific sentiment analysis for personalized experiences.
+**Response Example:**
+```json
+{
+  "sentiment": "negative",
+  "confidence": 0.72
+}
+```
 
-## Acknowledgements
-I would like to thank the Tiki.vn website for providing valuable data for this project. We also appreciate the open-source community for their contributions to libraries and tools used in this project.
+## 📄 License
+This project is licensed under the MIT License. Feel free to use, modify, and distribute as per the license terms.
